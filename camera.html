@@ -309,7 +309,9 @@
           // 使用requestAnimationFrame确保DOM更新后再设置图片源
           requestAnimationFrame(() => {
             previewImage.src = imageUrl;
+            console.log('预览图片URL设置成功:', imageUrl);
           });
+          console.log('预览图片URL设置中:', imageUrl);
         } catch (error) {
           console.error('处理图片时出错:', error);
           loadingOverlay.style.display = 'none';
