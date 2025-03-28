@@ -263,71 +263,52 @@
 
       // 关闭预览和保存图片的事件监听器在这里添加，确保只添加一次
 
-      // 拍照按钮点击事件
+      // 拍照按钮点击事件优化
       captureButton.addEventListener('click', async () => {
-        // 显示loading动画
         const loadingOverlay = document.getElementById('loading-overlay');
         loadingOverlay.style.display = 'flex';
         loadingOverlay.querySelector('.loading-text').textContent =
           '正在处理图片...';
 
-        // 设置处理超时
         const timeoutId = setTimeout(() => {
           loadingOverlay.style.display = 'none';
           showError('处理图片超时，请重试');
           video && video.play();
-        }, 15000); // 15秒超时
+        }, 15000);
 
         try {
-          // 暂停视频流以提高性能
           video && video.pause();
 
-          // 异步捕获帧并处理图片
-          // const frame = captureFrame();
           const imageUrl = await processImage(canvas);
 
-          // 清除超时定时器
           clearTimeout(timeoutId);
 
-          // 设置预览图片并显示预览层
           if (!previewImage) {
             throw new Error('预览图片元素不存在');
           }
 
-          console.log('图片URL生成成功:', imageUrl);
-
-          // 重新设置图片加载事件处理
           previewImage.onload = () => {
-            console.log('预览图片加载成功');
-            // 图片加载完成后隐藏loading
             loadingOverlay.style.display = 'none';
-            // 显示预览层
             previewLayer.style.display = 'block';
+            video && (video.style.display = 'none'); // 隐藏相机界面
           };
 
           previewImage.onerror = () => {
-            console.error('预览图片加载失败，URL:', imageUrl);
             loadingOverlay.style.display = 'none';
             showError('图片加载失败，请重试');
             video && video.play();
             previewLayer.style.display = 'none';
           };
 
-          // 确保清除之前的图片源并设置新的图片源
           previewImage.src = '';
-          // 使用requestAnimationFrame确保DOM更新后再设置图片源
           requestAnimationFrame(() => {
             previewImage.src = imageUrl;
-            console.log('预览图片URL设置成功:', imageUrl);
           });
-          console.log('预览图片URL设置中:', imageUrl);
         } catch (error) {
           console.error('处理图片时出错:', error);
           loadingOverlay.style.display = 'none';
           showError('处理图片失败: ' + error.message);
-          // 出错时恢复视频流
           video && video.play();
-          // 清除超时定时器
           clearTimeout(timeoutId);
         }
       });
@@ -341,6 +322,7 @@
           closePreviewButton.addEventListener('click', () => {
             previewLayer.style.display = 'none';
             downloadLink.style.display = 'none';
+            video && (video.style.display = 'block'); // 显示相机界面
             video && video.play();
           });
         }
