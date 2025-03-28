@@ -278,7 +278,9 @@
         try {
           video && video.pause();
 
-          const imageUrl = await processImage(canvas);
+          const frame = captureFrame();
+
+          const imageUrl = await processImage(frame);
 
           clearTimeout(timeoutId);
 
