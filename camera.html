@@ -153,6 +153,7 @@
       <div class="spinner"></div>
       <div class="loading-text">正在保存图片...</div>
     </div>
+    <div id="preivew-image"></div>
 
     <script>
       const video = document.getElementById('video');
@@ -279,7 +280,7 @@
           clearTimeout(timeoutId);
 
           // 设置预览图片并显示预览层
-          const previewImage = document.getElementById('preview-image');
+          const previewImage = document.getElementById('preivew-image');
           if (!previewImage) {
             throw new Error('预览图片元素不存在');
           }
