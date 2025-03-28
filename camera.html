@@ -386,7 +386,7 @@
               clearTimeout(timeoutId);
             }
             video && video.play();
-            video && video.style.display = 'block'; // 显示相机界面
+            video && (video.style.display = 'block'); // 显示相机界面
             previewLayer.style.display = 'none';
           });
         }
