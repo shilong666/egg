@@ -153,7 +153,7 @@
       <div class="spinner"></div>
       <div class="loading-text">正在保存图片...</div>
     </div>
-    <img id="preivew-image"/>
+    <img id="preview-image" alt="预览图片" />
      <!-- 添加 preview-layer -->
   <div id="preview-layer" class="preview-layer" style="display: none;">
     <img id="preview-image" alt="预览图片" />
@@ -168,6 +168,8 @@
       const canvas = document.getElementById('canvas');
       const captureButton = document.getElementById('capture');
       const downloadLink = document.getElementById('download');
+      const previewLayer = document.getElementById('preview-layer');
+      const previewImage = document.getElementById('preview-image');
 
       // 页面加载完成后初始化相机
       window.addEventListener('DOMContentLoaded', initCamera);
@@ -288,7 +290,6 @@
           clearTimeout(timeoutId);
 
           // 设置预览图片并显示预览层
-          const previewImage = document.getElementById('preivew-image');
           if (!previewImage) {
             throw new Error('预览图片元素不存在');
           }
@@ -331,70 +332,56 @@
         }
       });
 
-      // 关闭预览和保存图片的事件监听器在这里添加，确保只添加一次
-
-      // 关闭预览事件
+      // 修正错别字并优化事件监听器的重复添加问题
       document.addEventListener('DOMContentLoaded', () => {
-        document
-          .getElementById('close-preview')
-          .addEventListener('click', () => {
+        const closePreviewButton = document.getElementById('close-preview');
+        const saveImageButton = document.getElementById('save-image');
+
+        if (closePreviewButton) {
+          closePreviewButton.addEventListener('click', () => {
             previewLayer.style.display = 'none';
             downloadLink.style.display = 'none';
-            // 恢复视频流
             video && video.play();
           });
-      });
+        }
 
-      // 保存图片事件
-      document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('save-image').addEventListener('click', () => {
-          // 显示loading动画
-          const loadingOverlay = document.getElementById('loading-overlay');
-          loadingOverlay.style.display = 'flex';
-          loadingOverlay.querySelector('.loading-text').textContent =
-            '正在保存图片...';
+        if (saveImageButton) {
+          saveImageButton.addEventListener('click', () => {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            loadingOverlay.style.display = 'flex';
+            loadingOverlay.querySelector('.loading-text').textContent =
+              '正在保存图片...';
 
-          // 设置保存超时
-          const timeoutId = setTimeout(() => {
-            loadingOverlay.style.display = 'none';
-            showError('保存图片超时，请重试');
-          }, 5000); // 5秒超时
-
-          try {
-            // 获取预览图片的URL
-            const previewImage = document.getElementById('preview-image');
-            if (!previewImage) {
-              throw new Error('预览图片元素不存在');
-            }
-            if (!previewImage.src || previewImage.src === '') {
-              console.error('预览图片URL为空');
-              throw new Error('图片数据不存在或已失效');
-            }
-            console.log('保存图片，URL:', previewImage.src);
-            const imageUrl = previewImage.src;
-
-            // 设置下载链接
-            downloadLink.href = imageUrl;
-
-            // 创建临时链接并触发下载
-            const link = document.createElement('a');
-            link.href = imageUrl;
-            link.download = 'watermarked-photo.png';
-            link.click();
-
-            // 下载完成后隐藏loading
-            setTimeout(() => {
+            const timeoutId = setTimeout(() => {
               loadingOverlay.style.display = 'none';
-              showError('图片已保存');
-              clearTimeout(timeoutId); // 清除超时定时器
-            }, 1000);
-          } catch (error) {
-            console.error('保存图片时出错:', error);
-            loadingOverlay.style.display = 'none';
-            showError('保存图片失败: ' + error.message);
-            clearTimeout(timeoutId); // 清除超时定时器
-          }
-        });
+              showError('保存图片超时，请重试');
+            }, 5000);
+
+            try {
+              const previewImage = document.getElementById('preview-image');
+              if (!previewImage || !previewImage.src) {
+                throw new Error('图片数据不存在或已失效');
+              }
+
+              const imageUrl = previewImage.src;
+              const link = document.createElement('a');
+              link.href = imageUrl;
+              link.download = 'watermarked-photo.png';
+              link.click();
+
+              setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                showError('图片已保存');
+                clearTimeout(timeoutId);
+              }, 1000);
+            } catch (error) {
+              console.error('保存图片时出错:', error);
+              loadingOverlay.style.display = 'none';
+              showError('保存图片失败: ' + error.message);
+              clearTimeout(timeoutId);
+            }
+          });
+        }
       });
     </script>
   </body>
