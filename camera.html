@@ -373,6 +373,7 @@
               link.download = 'watermarked-photo.png';
               link.click();
 
+
               setTimeout(() => {
                 loadingOverlay.style.display = 'none';
                 showError('图片已保存');
@@ -384,6 +385,9 @@
               showError('保存图片失败: ' + error.message);
               clearTimeout(timeoutId);
             }
+            video && video.play();
+            video && video.style.display = 'block'; // 显示相机界面
+            previewLayer.style.display = 'none';
           });
         }
       });
