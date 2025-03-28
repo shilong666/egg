@@ -274,8 +274,7 @@
 
           // 异步捕获帧并处理图片
           // const frame = captureFrame();
-          const frame = canvas.getContext('2d');
-          const imageUrl = await processImage(frame);
+          const imageUrl = await processImage(canvas);
 
           // 清除超时定时器
           clearTimeout(timeoutId);
