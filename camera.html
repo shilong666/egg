@@ -153,7 +153,6 @@
       <div class="spinner"></div>
       <div class="loading-text">正在保存图片...</div>
     </div>
-    <img id="preview-image" alt="预览图片" />
      <!-- 添加 preview-layer -->
   <div id="preview-layer" class="preview-layer" style="display: none;">
     <img id="preview-image" alt="预览图片" />
@@ -288,6 +287,7 @@
           }
 
           previewImage.onload = () => {
+            captureButton.style.display = 'none';
             loadingOverlay.style.display = 'none';
             previewLayer.style.display = 'block';
             video && (video.style.display = 'none'); // 隐藏相机界面
@@ -322,6 +322,7 @@
           closePreviewButton.addEventListener('click', () => {
             previewLayer.style.display = 'none';
             downloadLink.style.display = 'none';
+            captureButton.style.display = 'block';
             video && (video.style.display = 'block'); // 显示相机界面
             video && video.play();
           });
@@ -338,6 +339,8 @@
               loadingOverlay.style.display = 'none';
               showError('保存图片超时，请重试');
             }, 5000);
+
+            captureButton.style.display = 'block';
 
             try {
               const previewImage = document.getElementById('preview-image');
