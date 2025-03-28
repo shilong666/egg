@@ -154,6 +154,14 @@
       <div class="loading-text">正在保存图片...</div>
     </div>
     <img id="preivew-image"/>
+     <!-- 添加 preview-layer -->
+  <div id="preview-layer" class="preview-layer" style="display: none;">
+    <img id="preview-image" alt="预览图片" />
+    <div class="preview-buttons">
+      <button id="close-preview" class="preview-btn">关闭预览</button>
+      <button id="save-image" class="preview-btn">保存图片</button>
+    </div>
+  </div>
 
     <script>
       const video = document.getElementById('video');
