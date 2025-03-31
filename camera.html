@@ -307,7 +307,7 @@
 					backgroundColor: null
 				}).then(function(canvasImage) {
 					// 将渲染的图像绘制到 Canvas 上
-					context.drawImage(canvasImage, canvas.height - canvasImage.height, 0);
+					context.drawImage(canvasImage, 0, 0);
 				});
 				return canvas;
 			}
@@ -426,6 +426,7 @@
 						video && video.play();
 						video && (video.style.display = 'block'); // 显示相机界面
 						previewLayer.style.display = 'none';
+						waterBox.style.display = 'block'; // 显示水印框
 					});
 				}
 			});
