@@ -300,9 +300,13 @@
 				canvas.width = video ? video.videoWidth : 375;
 				canvas.height = video ? video.videoHeight : 677;
 				video && context.drawImage(video, 0, 0, canvas.width, canvas.height);
-				await html2canvas(document.getElementById('waterBox')).then(function(canvasImage) {
+				await html2canvas(document.getElementById('waterBox'),{
+					// 这里可以设置一些选项
+					scale: 1,
+					backgroundColor: null
+				}).then(function(canvasImage) {
 					// 将渲染的图像绘制到 Canvas 上
-					context.drawImage(canvasImage, 0, 0);
+					context.drawImage(canvasImage, canvas.height - canvasImage.height, 0);
 				});
 				return canvas;
 			}
