@@ -307,7 +307,7 @@
 					backgroundColor: null
 				}).then(function(canvasImage) {
 					// 将渲染的图像绘制到 Canvas 上
-					context.drawImage(canvasImage, 0, 0);
+					context.drawImage(canvasImage, 0, canvas.height - canvasImage.height);
 				});
 				return canvas;
 			}
