@@ -19,7 +19,8 @@
 				background-color: #000;
 			}
 
-			.camera-video {
+			.camera-video,
+			.preview-image {
 				width: 100%;
 				height: calc(100vh - 120px);
 				object-fit: cover;
@@ -307,7 +308,7 @@
 					backgroundColor: null
 				}).then(function(canvasImage) {
 					// 将渲染的图像绘制到 Canvas 上
-					context.drawImage(canvasImage, 0, canvas.height - canvasImage.height);
+					context.drawImage(canvasImage, 10, canvas.height - canvasImage.height - 10);
 				});
 				return canvas;
 			}
